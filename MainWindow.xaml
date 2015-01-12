@@ -1,0 +1,162 @@
+﻿<Window
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:v="clr-namespace:CraigerEightOhEighter.Views"
+             xmlns:vm="clr-namespace:CraigerEightOhEighter.ViewModels" x:Class="CraigerEightOhEighter.MainWindow"
+             mc:Ignorable="d" 
+             Loaded="OnLoad"
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Window.DataContext>
+        <vm:MainUiViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF3D3A3A" Offset="0"/>
+                <GradientStop Color="#FF3B3838" Offset="1"/>
+                <GradientStop Color="#FF5D5555" Offset="0.399"/>
+                <GradientStop Color="#FF3D3636" Offset="0.696"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid HorizontalAlignment="Left" Height="146" Margin="49,18,0,0" VerticalAlignment="Top" Width="946">
+            <Button Content="^" Height="28" Width="33" Margin="-970,-20,0,0" Click="MainTempoClicked">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF776D6D" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="˅" Height="28" Width="33" Margin="-970,40,0,0"  MouseLeftButtonUp="MainTempoClicked" Click="MainTempoClicked">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="#FF776D6D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Label x:Name="TempoLabel" Margin="20,20" FontFamily="Microsoft NeoGothic" FontSize="16" Content="Tempo">
+                <Label.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFD76309" Offset="0"/>
+                        <GradientStop Color="#FFE5A60D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.Foreground>
+            </Label>
+            <Button Content="^" Height="28" Width="33" Margin="-650,-20,0,0" MouseLeftButtonUp="FineTempoClicked" Click="FineTempoClicked">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF776D6D" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="˅" Height="28" Width="33" Margin="-650,40,0,0" Click="FineTempoClicked">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="#FF776D6D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Label x:Name="PatternLabel" Margin="180,20" FontFamily="Microsoft NeoGothic" FontSize="16" Content="Pattern">
+                <Label.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFD76309" Offset="0"/>
+                        <GradientStop Color="#FFE5A60D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.Foreground>
+            </Label>
+            <Button Click="PlayStop" x:Name="PlayBut"  Content="Play" Height="62" Width="97" Margin="810,10,0,0" VerticalAlignment="Center" FontSize="24" FontFamily="Microsoft NeoGothic">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#C68C7F7F" Offset="0"/>
+                        <GradientStop Color="#C6FFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <TextBox HorizontalAlignment="Left" Height="62" x:Name="TempoBox"  Margin="10,10,0,0" Text="{Binding FullTempo, Mode=TwoWay }"  TextWrapping="Wrap" FontSize="54" FontStretch="Condensed" TextAlignment="Right" VerticalAlignment="Center" Width="120" TextChanged="TempoChanged">
+                <TextBox.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF17711A" Offset="0"/>
+                        <GradientStop Color="#FF09BE0E" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Foreground>
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF133530" Offset="0"/>
+                        <GradientStop Color="#FF15033F" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
+            <Button Content="^" Height="28" Width="33" Margin="-330,-20,0,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF776D6D" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="˅" Height="28" Width="33" Margin="-330,40,0,0">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="#FF776D6D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <TextBox HorizontalAlignment="Left" Height="62" Margin="170,10,0,0" TextWrapping="Wrap" FontSize="54" Text="01" FontStretch="Condensed" TextAlignment="Right" VerticalAlignment="Center" Width="120">
+                <TextBox.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF17711A" Offset="0"/>
+                        <GradientStop Color="#FF09BE0E" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Foreground>
+                <TextBox.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF133530" Offset="0"/>
+                        <GradientStop Color="#FF15033F" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBox.Background>
+            </TextBox>
+            <Button Content="Load Pattern" Height="62" Width="97" Margin="-150,47,19.5,37" VerticalAlignment="Center" FontSize="14" FontFamily="Microsoft NeoGothic">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#C68C7F7F" Offset="0"/>
+                        <GradientStop Color="#C6FFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="Save Pattern" Height="62" Width="97" Margin="80,47,19.5,37" VerticalAlignment="Center" FontSize="14" FontFamily="Microsoft NeoGothic">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#C68C7F7F" Offset="0"/>
+                        <GradientStop Color="#C6FFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="498" Margin="15,176,0,0" VerticalAlignment="Top" Width="950">
+            <Rectangle HorizontalAlignment="Left" Height="464" Margin="17,16,0,0" VerticalAlignment="Top" Width="911">
+                <Rectangle.Stroke>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFD76309" Offset="0"/>
+                        <GradientStop Color="#FFE5A60D" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <StackPanel x:Name="DrumGridHolder"  Orientation="Vertical" Width="900" Height="495" Margin="10">
+                <v:DrumLane x:Name="Track1" Margin="7"/>
+                <v:DrumLane x:Name="Track2" Margin="7"/>
+                <v:DrumLane x:Name="Track3" Margin="7"/>
+                <v:DrumLane x:Name="Track4" Margin="7"/>
+                <v:DrumLane x:Name="Track5" Margin="7"/>
+                <v:DrumLane x:Name="Track6" Margin="7"/>
+                <v:DrumLane x:Name="Track7" Margin="7"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</Window>
