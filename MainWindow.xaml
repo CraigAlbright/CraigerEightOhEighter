@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:CraigerEightOhEighter.ViewModels" x:Class="CraigerEightOhEighter.MainWindow"
              mc:Ignorable="d" 
              Loaded="OnLoad"
-             d:DesignHeight="700" d:DesignWidth="1000">
+             d:DesignHeight="700" d:DesignWidth="1200">
     <Window.DataContext>
         <vm:MainUiViewModel/>
     </Window.DataContext>
@@ -121,7 +121,7 @@
                     </LinearGradientBrush>
                 </TextBox.Background>
             </TextBox>
-            <Button Content="Load Pattern" Height="62" Width="97" Margin="-150,47,19.5,37" VerticalAlignment="Center" FontSize="14" FontFamily="Microsoft NeoGothic">
+            <Button Content="Load Pattern" Height="62" Width="97" Margin="-150,47,19.5,37" VerticalAlignment="Center" FontSize="14" FontFamily="Microsoft NeoGothic" Click="LoadPattern">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#C68C7F7F" Offset="0"/>
@@ -129,7 +129,15 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <Button Content="Save Pattern" Height="62" Width="97" Margin="80,47,19.5,37" VerticalAlignment="Center" FontSize="14" FontFamily="Microsoft NeoGothic">
+            <Button Content="Save Pattern" Height="62" Width="97" Margin="80,47,19.5,37" VerticalAlignment="Center" FontSize="14" FontFamily="Microsoft NeoGothic" Click="SavePattern">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#C68C7F7F" Offset="0"/>
+                        <GradientStop Color="#C6FFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Content="Clear Pattern" Height="62" Width="97" Margin="570,47,279,37" VerticalAlignment="Center" FontSize="14" FontFamily="Microsoft NeoGothic" Click="ClearPattern">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#C68C7F7F" Offset="0"/>
@@ -138,8 +146,8 @@
                 </Button.Background>
             </Button>
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="498" Margin="15,176,0,0" VerticalAlignment="Top" Width="950">
-            <Rectangle HorizontalAlignment="Left" Height="464" Margin="17,16,0,0" VerticalAlignment="Top" Width="911">
+        <Grid HorizontalAlignment="Left" Height="498" Margin="15,156,15,15" VerticalAlignment="Top" Width="1100">
+            <Rectangle HorizontalAlignment="Left" Height="464" Margin="107,16,0,0" VerticalAlignment="Top" Width="911">
                 <Rectangle.Stroke>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FFD76309" Offset="0"/>
@@ -147,7 +155,7 @@
                     </LinearGradientBrush>
                 </Rectangle.Stroke>
             </Rectangle>
-            <StackPanel x:Name="DrumGridHolder"  Orientation="Vertical" Width="900" Height="495" Margin="10">
+            <StackPanel x:Name="DrumGridHolder"  Orientation="Vertical" Width="900" Height="495" Margin="30,20,10,10">
                 <v:DrumLane x:Name="Track1" Margin="7"/>
                 <v:DrumLane x:Name="Track2" Margin="7"/>
                 <v:DrumLane x:Name="Track3" Margin="7"/>

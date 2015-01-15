@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Windows;
 using System.Linq;
 using System.Windows.Controls;
@@ -28,9 +30,6 @@ namespace CraigerEightOhEighter
 			InitializeComponent();
             MainUIViewModel = new MainUiViewModel(77) { TempoFine = 5 };
 		    DataContext = MainUIViewModel;
-		    //DataContext = MainUIViewModel;
-		    //var binding = new Binding {Source = MainUIViewModel.FullTempo, Mode = BindingMode.TwoWay};
-		    //TempoBox.SetBinding(TextBox.TextProperty,binding);
 		}
 
 		//private PropertyChangedEventHandler _handler;
@@ -257,6 +256,39 @@ namespace CraigerEightOhEighter
             if(MainUIViewModel == null)
                 return;
             MainUIViewModel.FullTempo = test.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void SavePattern(object sender, RoutedEventArgs e)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(Track));
+            var fs = new FileStream(@"C:\Test.808er", FileMode.OpenOrCreate);
+            foreach (var track in _tracks)
+            {
+                serializer.WriteObject(fs, track);
+            }
+           
+            MessageBox.Show("File Saved Successfully");
+        }
+
+        private void LoadPattern(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ClearPattern(object sender, RoutedEventArgs e)
+        {
+            for (var t=0; t< _tracks.ToArray().Count(); t++)
+            {
+                var track = _tracks.ToArray()[t];
+                for (var i = 0; i < track.Pattern.Length; i++)
+                {
+                    track.Pattern[i] = false;
+                }
+                var trackGrid = GetActiveTrack(t);
+                trackGrid.GridStack.Children.Clear();
+                RebuildTrackUi(t);
+            }
+           
         }
 
 	}
