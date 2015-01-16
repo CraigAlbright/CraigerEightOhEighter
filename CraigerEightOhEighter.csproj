@@ -178,9 +178,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AudioPlayer.cs" />
-    <Compile Include="Models\BeatControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Models\Patch.cs" />
     <Compile Include="Models\RhythmMachine.cs" />
     <Compile Include="Models\StreamingPlayer.cs" />
