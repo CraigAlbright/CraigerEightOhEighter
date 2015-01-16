@@ -9,7 +9,7 @@ namespace CraigerEightOhEighter.Models
     /// <summary>
     /// Implements a basic rhythm machine
     /// </summary>
-    [System.Runtime.InteropServices.GuidAttribute("4BE447EA-4D19-4680-A8F1-976346F97BA7")]
+    [GuidAttribute("4BE447EA-4D19-4680-A8F1-976346F97BA7")]
     public class Mixer : IDisposable
     {
         private readonly IAudioPlayer _mPlayer;
@@ -20,7 +20,7 @@ namespace CraigerEightOhEighter.Models
         private int _mTickPeriod;
         private int _mTickLeft;
         private int[] _mMixBuffer;
-        private int[] _mMixBuffer16;
+        private short[] _mMixBuffer16;
         private readonly List<PatchReader> _patchReaders = new List<PatchReader>();
 
         public List<Track> Tracks = new List<Track>();
@@ -31,8 +31,6 @@ namespace CraigerEightOhEighter.Models
         {
             if (player == null)
                 throw new ArgumentNullException("player");
-            //if (player.BitsPerSample != 16 || player.Channels != 1)
-            //    throw new ArgumentException("player");
             RequestedSampleRate = 12100;
             ResampleStream = new AcmStream(new NAudio.Wave.WaveFormat(44100, 16, 2),
                 new NAudio.Wave.WaveFormat(RequestedSampleRate, 16, 2));
@@ -197,7 +195,7 @@ namespace CraigerEightOhEighter.Models
             DoMix(samples);
 
             if (_mMixBuffer16 == null || _mMixBuffer16.Length < samples)
-                _mMixBuffer16 = new int[samples];
+                _mMixBuffer16 = new short[samples];
 
             // clip to 16 bit
             for (var i = 0; i < samples; i++)
@@ -209,12 +207,12 @@ namespace CraigerEightOhEighter.Models
                     if (_mMixBuffer[i] < -32768)
                         _mMixBuffer16[i] = -32768;
                     else
-                        _mMixBuffer16[i] = _mMixBuffer[i];
+                        _mMixBuffer16[i] = (short)_mMixBuffer[i];
                 }
             }
-            Buffer.BlockCopy(_mMixBuffer16,0,ResampleStream.SourceBuffer,0,_mMixBuffer.Length);
-            //_mMixBuffer16.CopyTo(ResampleStream.SourceBuffer,0);
-            Marshal.Copy(ResampleStream.SourceBuffer, 0, dest, samples);
+           // Buffer.BlockCopy(_mMixBuffer16, 0, ResampleStream.SourceBuffer, 0, _mMixBuffer16.Length);
+            //Buffer.BlockCopy(_mMixBuffer16, 0, ResampleStream.SourceBuffer, 0, _mMixBuffer.Length);
+            Marshal.Copy(_mMixBuffer16, 0, dest, samples);
             //Buffer.BlockCopy(ResampleStream.SourceBuffer, 0, _mMixBuffer16, samples,ResampleStream.SourceBuffer.Length);
         }
         private void DoTick()
