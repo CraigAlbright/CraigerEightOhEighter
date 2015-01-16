@@ -39,8 +39,6 @@ namespace CraigerEightOhEighter
 		    DataContext = MainUIViewModel;
 		}
 
-		//private PropertyChangedEventHandler _handler;
-
 		void OnLoad(object sender, RoutedEventArgs e)
 		{
 			var windowPtr = new WindowInteropHelper(this).Handle;
@@ -51,7 +49,7 @@ namespace CraigerEightOhEighter
 			//_handler = ClickHandler;
 		}
 
-	    private void ClearUIButtons()
+	    private void ClearUiButtons()
 	    {
 	        var trackNumber = 0;
 	        foreach (var activeTrack in _tracks.Select(track => GetActiveTrack(trackNumber)))
@@ -296,7 +294,7 @@ namespace CraigerEightOhEighter
 
         private void LoadPattern(object sender, RoutedEventArgs e)
         {
-            ClearUIButtons();
+            ClearUiButtons();
             var fd = new OpenFileDialog();
             var result = fd.ShowDialog();
             if (result == null || (!(bool) result || !fd.CheckFileExists || string.IsNullOrEmpty(fd.FileName))) return;

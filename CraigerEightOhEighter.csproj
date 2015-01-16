@@ -133,6 +133,11 @@
     </ApplicationDefinition>
     <Compile Include="DSP\Resampler.cs" />
     <Compile Include="Models\ButtonType.cs" />
+    <Compile Include="Models\Mixer.cs" />
+    <Compile Include="Models\PatchReader.cs" />
+    <Compile Include="Models\Track.cs" />
+    <Compile Include="Models\TrackCollection.cs" />
+    <Compile Include="Models\TrackEnumerator.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\MainUIViewModel.cs" />
     <Compile Include="Views\DrumButton.xaml.cs">
@@ -175,7 +180,7 @@
     <Compile Include="Models\BeatControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Models\Rhythm.cs" />
+    <Compile Include="Models\Patch.cs" />
     <Compile Include="Models\RhythmMachine.cs" />
     <Compile Include="Models\StreamingPlayer.cs" />
     <Compile Include="Models\WaveNative.cs" />
