@@ -1,16 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Windows;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Xml;
 using CraigerEightOhEighter.Models;
 using CraigerEightOhEighter.ViewModels;
 using CraigerEightOhEighter.Views;
+using Microsoft.Win32;
+using Button = System.Windows.Controls.Button;
+using MessageBox = System.Windows.MessageBox;
+using TextBox = System.Windows.Controls.TextBox;
 
 namespace CraigerEightOhEighter
 {
@@ -44,8 +51,17 @@ namespace CraigerEightOhEighter
 			//_handler = ClickHandler;
 		}
 
-        
-		private void BuildGridOnUi(IEnumerable<Track> tracks)
+	    private void ClearUIButtons()
+	    {
+	        var trackNumber = 0;
+	        foreach (var activeTrack in _tracks.Select(track => GetActiveTrack(trackNumber)))
+	        {
+	            activeTrack.GridStack.Children.Clear();
+	            trackNumber++;
+	        }
+	    }
+
+	    private void BuildGridOnUi(IEnumerable<Track> tracks)
 		{
 			var trackNumber = 0;
 			var tickNumber = 0;
@@ -187,7 +203,9 @@ namespace CraigerEightOhEighter
 		{
 			var controls = DrumGridHolder.Children;
 			var trackNum = trackNumber + 1;
-			return (from object control in controls where control.GetType() == typeof (DrumLane) select control as DrumLane).FirstOrDefault(drumLane => drumLane != null && drumLane.Name == "Track" + trackNum);
+		    return
+		        (from object control in controls where control.GetType() == typeof (DrumLane) select control as DrumLane)
+		            .FirstOrDefault(drumLane => drumLane != null && drumLane.Name == "Track" + trackNum);
 		}
 
 		private void PlayStop(object sender, RoutedEventArgs e)
@@ -261,18 +279,51 @@ namespace CraigerEightOhEighter
         private void SavePattern(object sender, RoutedEventArgs e)
         {
             var serializer = new DataContractJsonSerializer(typeof(Track));
-            var fs = new FileStream(@"C:\Test.808er", FileMode.OpenOrCreate);
-            foreach (var track in _tracks)
+            using (var fs = new FileStream(@"C:\Test.808er", FileMode.OpenOrCreate))
             {
-                serializer.WriteObject(fs, track);
+                foreach (var track in _tracks)
+                {
+                    serializer.WriteObject(fs, track);
+                    var encoding = new UTF8Encoding();
+                    var splitter = " " + Environment.NewLine + " ";
+                    var bytes = encoding.GetBytes(splitter);
+                    fs.Write(bytes, 0, bytes.Length);
+                }
+                fs.Flush(true);
             }
-           
             MessageBox.Show("File Saved Successfully");
         }
 
         private void LoadPattern(object sender, RoutedEventArgs e)
         {
-
+            ClearUIButtons();
+            var fd = new OpenFileDialog();
+            var result = fd.ShowDialog();
+            if (result == null || (!(bool) result || !fd.CheckFileExists || string.IsNullOrEmpty(fd.FileName))) return;
+            _tracks = new List<Track>();
+            var ms = new MemoryStream();
+            var encoding = new UTF8Encoding();
+            using (var sr = new StreamReader(@"C:\Test.808er"))
+            {
+                while (!sr.EndOfStream)
+                {
+                    var text = sr.ReadLine();
+                    if (text == null || string.IsNullOrEmpty(text.Trim())) continue;
+                    var bytes = encoding.GetBytes(text);
+                    ms.Write(bytes, 0, bytes.Length);
+                    using (
+                        var jsonReader = JsonReaderWriterFactory.CreateJsonReader(bytes,
+                            XmlDictionaryReaderQuotas.Max))
+                    {
+                        var outputSerialiser = new DataContractJsonSerializer(typeof (Track));
+                        var track = outputSerialiser.ReadObject(jsonReader);
+                        if (track == null) continue;
+                        var listTracks = _tracks as List<Track>;
+                        listTracks.Add((Track) track);
+                    }
+                }
+            }
+            BuildGridOnUi(_tracks);
         }
 
         private void ClearPattern(object sender, RoutedEventArgs e)
