@@ -11,7 +11,7 @@ namespace CraigerEightOhEighter.Models
 		private const int TrackLength = 16;
 	    public MainUiViewModel MainUiViewModel { get; set; }
         public Dictionary<string, bool[]> CurrentPattern { get; set; } 
-		public RythmMachineApp(IntPtr control, IAudioPlayer player, MainUiViewModel viewModel)
+		public RythmMachineApp(IAudioPlayer player, MainUiViewModel viewModel)
 		{
 		    MainUiViewModel = viewModel;
 			const int measuresPerBeat = 2;
@@ -83,9 +83,6 @@ namespace CraigerEightOhEighter.Models
                 MainUiViewModel.CurrentTick = CurrentTick;
 		}
 
-		private void m_Progress_Disposed(object sender, EventArgs e)
-		{
-			_mTimer.Enabled = false;
-		}
+		
 	}
 }

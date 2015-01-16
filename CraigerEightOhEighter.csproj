@@ -135,6 +135,7 @@
     <Compile Include="Models\ButtonType.cs" />
     <Compile Include="Models\Mixer.cs" />
     <Compile Include="Models\PatchReader.cs" />
+    <Compile Include="Models\PullStream.cs" />
     <Compile Include="Models\Track.cs" />
     <Compile Include="Models\TrackCollection.cs" />
     <Compile Include="Models\TrackEnumerator.cs" />

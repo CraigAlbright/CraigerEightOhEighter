@@ -53,7 +53,18 @@ namespace CraigerEightOhEighter.Models
             set { lock(this) _mPattern[ndx] = value; }
         }
         private bool[] _mPattern;
-       
+        private decimal _volume = 0.5M;
+        public decimal Volume
+        {
+            get { return _volume; }
+            set
+            {
+                if (value > 1) _volume = 1;
+                if (value < 0) _volume = 0;
+                if (value <= 1 && value >= 0)
+                    _volume = value;
+            }
+        }
         public readonly Patch Patch;
         [DataMember]
         public readonly string Name;

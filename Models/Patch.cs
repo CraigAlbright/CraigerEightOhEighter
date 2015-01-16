@@ -5,20 +5,30 @@ using System.Reflection;
 namespace CraigerEightOhEighter.Models
 {
 	/// <summary>
-	/// This class holds the audio data for a drum patch
+	/// This is a "sound" in the drum machine. The sample start is the sample number that the sound will start on. Sample end is the 
+	/// number of samples shorter that you want to make the sound. This will likely be a percentage of "shrink" to allow some DSP to "grow" the sample.
 	/// </summary>
 	public class Patch
 	{
-		public Patch(Stream stream)
+		public Patch(Stream stream, int sampleStart, int sampleEnd)
 		{
+		    if (sampleStart > stream.Length)
+		        SampleStart = stream.Length - 1;
+		    else
+		    {
+                SampleStart = sampleStart;    
+		    }
+		    
+		    SampleEnd = stream.Length < SampleEnd ? stream.Length : sampleEnd;
 			using(var s = new WaveStream(stream))
 			{
 				if (s.Format.wFormatTag != (short)WaveFormats.Pcm)
 					throw new Exception("Invalid sample format");
 
 				// read everything into memory to speed up things (CF optimization)
+                
 				var data = new byte[s.Length];
-				s.Read(data, 0, data.Length);
+				s.Read(data, (int)SampleStart, data.Length - (int)SampleEnd);
 
 				var samples = (int)s.Length / s.Format.nBlockAlign;
 				var stereo = s.Format.nChannels == 2;
@@ -47,16 +57,16 @@ namespace CraigerEightOhEighter.Models
 		}
 
 		public Patch(string fileName) :
-			this(new FileStream(fileName, FileMode.Open))
+			this(new FileStream(fileName, FileMode.Open), 0, 0)
 		{
 		}
 
 		public Patch(Type type, string resourceName) :
-			this(Assembly.GetExecutingAssembly().GetManifestResourceStream(type, resourceName))
+			this(Assembly.GetExecutingAssembly().GetManifestResourceStream(type, resourceName), 0, 0)
 		{
 		}
 
-	    public Patch(string name, Stream resStream) : this(resStream)
+	    public Patch(string name, Stream resStream) : this(resStream, 0,0)
 	    {
 	        
 	    }
@@ -65,7 +75,8 @@ namespace CraigerEightOhEighter.Models
 		{
 			return new PatchReader(_mAudioData);
 		}
-
+        public long SampleStart { get; set; }
+        public long SampleEnd { get; set; }
 		private readonly int[] _mAudioData;
 	}
 }

@@ -26,5 +26,8 @@ namespace CraigerEightOhEighter.Models
 
         private int _mDataPos;
         private readonly int[] _mData;
+        public int SampleStart { get; set; }
+        public int SampleEnd { get; set; }
+        public double Volume { get; set; }
     }
 }

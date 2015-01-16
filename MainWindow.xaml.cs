@@ -43,7 +43,7 @@ namespace CraigerEightOhEighter
 		{
 			var windowPtr = new WindowInteropHelper(this).Handle;
 			_streamingPlayer = new StreamingPlayer(windowPtr, 22050, 16, 2);
-            _mMachine = new RythmMachineApp(windowPtr, _streamingPlayer, MainUIViewModel);
+            _mMachine = new RythmMachineApp( _streamingPlayer, MainUIViewModel);
 		    _tracks = _mMachine.Mixer.Tracks;
 			BuildGridOnUi(_tracks);
 			//_handler = ClickHandler;

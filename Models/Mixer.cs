@@ -9,8 +9,21 @@ namespace CraigerEightOhEighter.Models
     /// <summary>
     /// Implements a basic rhythm machine
     /// </summary>
+    [System.Runtime.InteropServices.GuidAttribute("4BE447EA-4D19-4680-A8F1-976346F97BA7")]
     public class Mixer : IDisposable
     {
+        private readonly IAudioPlayer _mPlayer;
+        private readonly object _mBpmLock = new object();
+        private decimal _mBpm;
+        private readonly int _mTicksPerBeat;
+        private int _mTick;
+        private int _mTickPeriod;
+        private int _mTickLeft;
+        private int[] _mMixBuffer;
+        private int[] _mMixBuffer16;
+        private readonly List<PatchReader> _patchReaders = new List<PatchReader>();
+
+        public List<Track> Tracks = new List<Track>();
         public const int MaxTrackLength = 128;
         public AcmStream ResampleStream;
         public int RequestedSampleRate { get; set; }
@@ -20,9 +33,10 @@ namespace CraigerEightOhEighter.Models
                 throw new ArgumentNullException("player");
             //if (player.BitsPerSample != 16 || player.Channels != 1)
             //    throw new ArgumentException("player");
-            RequestedSampleRate = 44100;
+            RequestedSampleRate = 12100;
             ResampleStream = new AcmStream(new NAudio.Wave.WaveFormat(44100, 16, 2),
                 new NAudio.Wave.WaveFormat(RequestedSampleRate, 16, 2));
+            
             _mPlayer = player;
             _mTicksPerBeat = ticksPerBeat;
             Bpm = 77;
@@ -165,11 +179,11 @@ namespace CraigerEightOhEighter.Models
                 var tomix = Math.Min(samples - pos, _mTickLeft);
 
                 // mix current streams
-                for (var i = _mReaders.Count - 1; i >= 0; i--)
+                for (var i = _patchReaders.Count - 1; i >= 0; i--)
                 {
-                    var r = _mReaders[i];
-                    if (!r.Mix(_mMixBuffer, pos, tomix))
-                        _mReaders.RemoveAt(i);
+                    var patchReader = _patchReaders[i];
+                    if (!patchReader.Mix(_mMixBuffer, pos, tomix))
+                        _patchReaders.RemoveAt(i);
                 }
 
                 _mTickLeft -= tomix;
@@ -183,7 +197,7 @@ namespace CraigerEightOhEighter.Models
             DoMix(samples);
 
             if (_mMixBuffer16 == null || _mMixBuffer16.Length < samples)
-                _mMixBuffer16 = new short[samples];
+                _mMixBuffer16 = new int[samples];
 
             // clip to 16 bit
             for (var i = 0; i < samples; i++)
@@ -195,19 +209,21 @@ namespace CraigerEightOhEighter.Models
                     if (_mMixBuffer[i] < -32768)
                         _mMixBuffer16[i] = -32768;
                     else
-                        _mMixBuffer16[i] = (short)_mMixBuffer[i];
+                        _mMixBuffer16[i] = _mMixBuffer[i];
                 }
             }
             Buffer.BlockCopy(_mMixBuffer16,0,ResampleStream.SourceBuffer,0,_mMixBuffer.Length);
-            Marshal.Copy(_mMixBuffer16, 0, dest, samples);
+            //_mMixBuffer16.CopyTo(ResampleStream.SourceBuffer,0);
+            Marshal.Copy(ResampleStream.SourceBuffer, 0, dest, samples);
+            //Buffer.BlockCopy(ResampleStream.SourceBuffer, 0, _mMixBuffer16, samples,ResampleStream.SourceBuffer.Length);
         }
         private void DoTick()
         {
             lock(Tracks)
             {
-                foreach (var r in Tracks.Select(t => t.GetBeat(_mTick)).Where(r => r != null))
+                foreach (var reader in Tracks.Select(t => t.GetBeat(_mTick)).Where(reader => reader != null))
                 {
-                    _mReaders.Add(r);
+                    _patchReaders.Add(reader);
                 }
                 _mTick = (_mTick + 1) % MaxTrackLength;
             }
@@ -218,19 +234,6 @@ namespace CraigerEightOhEighter.Models
             return samples / _mTickPeriod;
         }
 
-        private readonly IAudioPlayer _mPlayer;
-
-        private readonly object _mBpmLock = new object();
-        private decimal _mBpm;
-        private readonly int _mTicksPerBeat;
-        private int _mTick;
-        private int _mTickPeriod;
-        private int _mTickLeft;
-
-        private int[] _mMixBuffer;
-        private short[] _mMixBuffer16;
-        private readonly List<PatchReader> _mReaders = new List<PatchReader>();
-
-        public List<Track> Tracks = new List<Track>();
+       
     }
 }
