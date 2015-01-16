@@ -54,6 +54,7 @@ namespace CraigerEightOhEighter.Models
         }
         private bool[] _mPattern;
         private decimal _volume = 0.5M;
+        [DataMember]
         public decimal Volume
         {
             get { return _volume; }
@@ -65,6 +66,21 @@ namespace CraigerEightOhEighter.Models
                     _volume = value;
             }
         }
+        [DataMember]
+        public int SampleStart { get; set; }
+        [DataMember]
+        public int SampleEnd { get; set; }
+        [DataMember]
+        public int Pitch { get; set; }
+        [DataMember]
+        public int Attack { get; set; }
+        [DataMember]
+        public int Decay { get; set; }
+        [DataMember]
+        public int Sustain { get; set; }
+        [DataMember]
+        public int Release { get; set; }
+        [DataMember]
         public readonly Patch Patch;
         [DataMember]
         public readonly string Name;
