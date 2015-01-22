@@ -31,8 +31,8 @@ namespace CraigerEightOhEighter.Models
 				s.Read(data, (int)SampleStart, data.Length - (int)SampleEnd);
 
 				var samples = (int)s.Length / s.Format.nBlockAlign;
-				var stereo = s.Format.nChannels == 2;
-				var eight = s.Format.wBitsPerSample == 8; // assume 16 bit otherwise
+				var isStereo = s.Format.nChannels == 2;
+				var isEightBit = s.Format.wBitsPerSample == 8; // assume 16 bit otherwise
 
 				// we store the audio data always in mono
 				_mAudioData = new int[samples];
@@ -43,9 +43,9 @@ namespace CraigerEightOhEighter.Models
 					var pos = 0;
 					for (var i = 0; i < samples; i++)
 					{
-						_mAudioData[pos] = eight ? 256 * (r.ReadByte() - 128) : r.ReadInt16();
-						if (stereo) // just add up channels to convert to mono
-							_mAudioData[pos] += eight ? 256 * (r.ReadByte() - 128) : r.ReadInt16();
+						_mAudioData[pos] = isEightBit ? 256 * (r.ReadByte() - 128) : r.ReadInt16();
+						if (isStereo) // just add up channels to convert to mono
+							_mAudioData[pos] += isEightBit ? 256 * (r.ReadByte() - 128) : r.ReadInt16();
 						pos++;
 					}
 				}

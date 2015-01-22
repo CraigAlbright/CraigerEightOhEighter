@@ -59,7 +59,8 @@ namespace CraigerEightOhEighter.ViewModels
         {
             if (fine < 0)
             {
-                TempoFine = 0;
+                TempoFine = 9;
+                TempoMain--;
                 OnPropertyChanged();
                 return;
             }

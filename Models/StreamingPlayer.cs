@@ -11,7 +11,7 @@ namespace CraigerEightOhEighter.Models
 	{
 	    public StreamingPlayer()
 	    {
-	        MaxLatencyMs = 300;
+	        MaxLatencyMs = 30;
 	    }
 
 	    private int _latency = 300;
