@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Autofac;
 using NAudio.Wave.Compression;
 
 namespace CraigerEightOhEighter.Models
@@ -27,6 +28,7 @@ namespace CraigerEightOhEighter.Models
         public const int MaxTrackLength = 128;
         public AcmStream ResampleStream;
         public int RequestedSampleRate { get; set; }
+        public IContainer Container { get; set; }
         public Mixer(IAudioPlayer player, int ticksPerBeat)
         {
             if (player == null)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Autofac;
 using CraigerEightOhEighter.Properties;
 using CraigerEightOhEighter.ViewModels;
 
@@ -9,6 +10,7 @@ namespace CraigerEightOhEighter.Models
 	public class RythmMachineApp : IDisposable
 	{
 		private const int TrackLength = 16;
+        public IContainer Container { get; set; }
 	    public MainUiViewModel MainUiViewModel { get; set; }
         public Dictionary<string, bool[]> CurrentPattern { get; set; } 
 		public RythmMachineApp(IAudioPlayer player, MainUiViewModel viewModel)
@@ -16,7 +18,7 @@ namespace CraigerEightOhEighter.Models
 		    MainUiViewModel = viewModel;
 			const int measuresPerBeat = 2;
 		    CurrentPattern = new Dictionary<string, bool[]>();
-			Mixer = new Mixer(player, measuresPerBeat);
+			Mixer = new Mixer(player, measuresPerBeat){Container = viewModel.Container};
 			Mixer.Add(new Track("808 Kick", new Patch("bass", Resources.bass), TrackLength));
 			Mixer.Add(new Track("808 Snare", new Patch("snare", Resources.snare), TrackLength));
             Mixer.Add(new Track("808 CH", new Patch("ch", Resources.closed), TrackLength));

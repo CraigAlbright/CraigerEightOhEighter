@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using CraigerEightOhEighter.Annotations;
+using IContainer = Autofac.IContainer;
 
 namespace CraigerEightOhEighter.ViewModels
 {
@@ -12,7 +13,7 @@ namespace CraigerEightOhEighter.ViewModels
         {
             TempoMain = tempoInit;
         }
-
+        public IContainer Container { get; set; }
         public MainUiViewModel()
         {
             TempoMain = 80;

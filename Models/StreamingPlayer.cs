@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Autofac;
 using Microsoft.DirectX.DirectSound;
 
 namespace CraigerEightOhEighter.Models
@@ -22,6 +23,8 @@ namespace CraigerEightOhEighter.Models
             set { _latency = value; }
 	    }
 		public int SampleRate { get; set; }
+
+        public IContainer Container { get; set; }
 
 	    /// <summary>
 		/// Helper function for creating WaveFormat instances

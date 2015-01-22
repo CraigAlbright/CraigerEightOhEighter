@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Xml;
+using Autofac;
 using CraigerEightOhEighter.Models;
 using CraigerEightOhEighter.ViewModels;
 using CraigerEightOhEighter.Views;
@@ -30,20 +31,29 @@ namespace CraigerEightOhEighter
 		private RythmMachineApp _mMachine;
         // ReSharper disable once InconsistentNaming
 	    public MainUiViewModel MainUIViewModel { get; private set; }
+        public IContainer Container { get; set; }
 		private bool _playing;
 		private IEnumerable<Track> _tracks;
 		public MainWindow()
 		{
 			InitializeComponent();
-            MainUIViewModel = new MainUiViewModel(77) { TempoFine = 5 };
+            
+            var builder = new ContainerBuilder();
+            builder.RegisterType<MainUiViewModel>().SingleInstance();
+            //builder.RegisterType<TodayWriter>().As<IDateWriter>();
+            Container = builder.Build();
+            MainUIViewModel = Container.Resolve<MainUiViewModel>();
+		    MainUIViewModel.TempoMain = 77;
+		    MainUIViewModel.TempoFine = 5;
+		    MainUIViewModel.Container = Container;
 		    DataContext = MainUIViewModel;
 		}
 
 		void OnLoad(object sender, RoutedEventArgs e)
 		{
 			var windowPtr = new WindowInteropHelper(this).Handle;
-			_streamingPlayer = new StreamingPlayer(windowPtr, 22050, 16, 2);
-            _mMachine = new RythmMachineApp( _streamingPlayer, MainUIViewModel);
+			_streamingPlayer = new StreamingPlayer(windowPtr, 22050, 16, 2) {Container = Container};
+            _mMachine = new RythmMachineApp( _streamingPlayer, MainUIViewModel) {Container = Container};
 		    _tracks = _mMachine.Mixer.Tracks;
 			BuildGridOnUi(_tracks);
 			//_handler = ClickHandler;
@@ -51,11 +61,11 @@ namespace CraigerEightOhEighter
 
 	    private void ClearUiButtons()
 	    {
-	        var trackNumber = 0;
-	        foreach (var activeTrack in _tracks.Select(track => GetActiveTrack(trackNumber)))
+	        int[] trackNumber = {0};
+	        foreach (var activeTrack in _tracks.Select(track => GetActiveTrack(trackNumber[0])))
 	        {
 	            activeTrack.GridStack.Children.Clear();
-	            trackNumber++;
+	            trackNumber[0]++;
 	        }
 	    }
 
