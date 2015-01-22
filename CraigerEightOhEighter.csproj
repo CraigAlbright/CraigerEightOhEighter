@@ -59,6 +59,9 @@
     <AssemblyOriginatorKeyFile>CraigerEightOhEighter.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.DirectX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Windows\Microsoft.NET\DirectX for Managed Code\1.0.2902.0\Microsoft.DirectX.dll</HintPath>
@@ -140,6 +143,7 @@
     <Compile Include="Models\TrackCollection.cs" />
     <Compile Include="Models\TrackEnumerator.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ViewModels\IMainUiViewModel.cs" />
     <Compile Include="ViewModels\MainUIViewModel.cs" />
     <Compile Include="Views\DrumButton.xaml.cs">
       <DependentUpon>DrumButton.xaml</DependentUpon>

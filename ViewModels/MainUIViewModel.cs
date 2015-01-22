@@ -6,7 +6,7 @@ using CraigerEightOhEighter.Annotations;
 
 namespace CraigerEightOhEighter.ViewModels
 {
-    public class MainUiViewModel : INotifyPropertyChanged
+    public class MainUiViewModel : INotifyPropertyChanged, IMainUiViewModel
     {
         public MainUiViewModel(int tempoInit)
         {
