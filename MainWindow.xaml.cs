@@ -12,6 +12,8 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Xml;
 using Autofac;
+using Autofac.Core;
+using CraigerEightOhEighter.Helpers;
 using CraigerEightOhEighter.Models;
 using CraigerEightOhEighter.ViewModels;
 using CraigerEightOhEighter.Views;
@@ -37,11 +39,9 @@ namespace CraigerEightOhEighter
 		public MainWindow()
 		{
 			InitializeComponent();
-            
-            var builder = new ContainerBuilder();
-            builder.RegisterType<MainUiViewModel>().SingleInstance();
-            builder.RegisterType<Mixer>().As<IMixer>();
-            Container = builder.Build();
+
+		    var diHelper = new DependencyInjectionHelper();
+		    Container = diHelper.Container;
             MainUIViewModel = Container.Resolve<MainUiViewModel>();
 		    MainUIViewModel.TempoMain = 77;
 		    MainUIViewModel.TempoFine = 5;

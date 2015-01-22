@@ -135,6 +135,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DSP\Resampler.cs" />
+    <Compile Include="Helpers\DependencyInjectionHelper.cs" />
     <Compile Include="Models\ButtonType.cs" />
     <Compile Include="Models\IMixer.cs" />
     <Compile Include="Models\Mixer.cs" />
