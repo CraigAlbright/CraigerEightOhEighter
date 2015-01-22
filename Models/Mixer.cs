@@ -11,7 +11,7 @@ namespace CraigerEightOhEighter.Models
     /// Implements a basic rhythm machine
     /// </summary>
     [GuidAttribute("4BE447EA-4D19-4680-A8F1-976346F97BA7")]
-    public class Mixer : IDisposable
+    public class Mixer : IMixer,  IDisposable
     {
         private readonly IAudioPlayer _mPlayer;
         private readonly object _mBpmLock = new object();
@@ -24,13 +24,14 @@ namespace CraigerEightOhEighter.Models
         private short[] _mMixBuffer16;
         private readonly List<PatchReader> _patchReaders = new List<PatchReader>();
 
-        public List<Track> Tracks = new List<Track>();
+        //public List<Track> Tracks = new List<Track>();
         public const int MaxTrackLength = 128;
         public AcmStream ResampleStream;
         public int RequestedSampleRate { get; set; }
         public IContainer Container { get; set; }
         public Mixer(IAudioPlayer player, int ticksPerBeat)
         {
+            Tracks = new List<Track>();
             if (player == null)
                 throw new ArgumentNullException("player");
             RequestedSampleRate = 12100;
@@ -155,6 +156,8 @@ namespace CraigerEightOhEighter.Models
                 return ticks % MaxTrackLength;
             }
         }
+
+        public List<Track> Tracks { get; set; }
         // private stuff
         private void DoMix(int samples)
         {

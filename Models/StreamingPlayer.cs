@@ -43,9 +43,10 @@ namespace CraigerEightOhEighter.Models
 			return wfx;
 		}
 
-		public StreamingPlayer(IntPtr owner, int sr, short bps, short ch) : 
+		public StreamingPlayer(IntPtr owner, int sr, short bps, short ch, IContainer container) : 
 			this(owner, null, CreateWaveFormat(sr, bps, ch))
 		{
+		    Container = container;
 		}
 
 		public StreamingPlayer(IntPtr owner, Microsoft.DirectX.DirectSound.WaveFormat format) : 

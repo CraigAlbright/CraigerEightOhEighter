@@ -40,7 +40,7 @@ namespace CraigerEightOhEighter
             
             var builder = new ContainerBuilder();
             builder.RegisterType<MainUiViewModel>().SingleInstance();
-            //builder.RegisterType<TodayWriter>().As<IDateWriter>();
+            builder.RegisterType<Mixer>().As<IMixer>();
             Container = builder.Build();
             MainUIViewModel = Container.Resolve<MainUiViewModel>();
 		    MainUIViewModel.TempoMain = 77;
@@ -52,8 +52,8 @@ namespace CraigerEightOhEighter
 		void OnLoad(object sender, RoutedEventArgs e)
 		{
 			var windowPtr = new WindowInteropHelper(this).Handle;
-			_streamingPlayer = new StreamingPlayer(windowPtr, 22050, 16, 2) {Container = Container};
-            _mMachine = new RythmMachineApp( _streamingPlayer, MainUIViewModel) {Container = Container};
+            _streamingPlayer = new StreamingPlayer(windowPtr, 22050, 16, 2, Container);
+            _mMachine = new RythmMachineApp( _streamingPlayer, MainUIViewModel, Container);
 		    _tracks = _mMachine.Mixer.Tracks;
 			BuildGridOnUi(_tracks);
 			//_handler = ClickHandler;
